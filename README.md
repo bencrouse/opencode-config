@@ -113,16 +113,6 @@ Keep commands tied to one repository under that project's `.opencode/`
 directory. Database reset/migration commands and hard-coded branch workflows do
 not belong in this global configuration.
 
-## Repository Hygiene
-
-Do not commit:
-
-- Authentication files or API keys
-- `auditor.log` or other logs
-- OpenCode databases, snapshots, prompt history, or tool output
-- `node_modules`
-- Editor swap files and local backups
-
 ## License
 
 Licensed under the Apache License, Version 2.0. See `LICENSE` and `NOTICE`.

@@ -3,6 +3,17 @@ config/.gitignore
 config/bun.lock
 config/package-lock.json
 config/package.json
+auth.json
+mcp-auth.json
+*.db
+*.db-shm
+*.db-wal
+prompt-history.jsonl
+snapshot/
+storage/
+tool-output/
+.env
+.env.*
 *.log
 *.bak
 *.swp

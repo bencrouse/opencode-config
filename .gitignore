@@ -1,0 +1,9 @@
+node_modules/
+config/.gitignore
+config/bun.lock
+config/package-lock.json
+config/package.json
+*.log
+*.bak
+*.swp
+.DS_Store

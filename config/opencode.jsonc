@@ -1,0 +1,98 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "model": "openrouter/z-ai/glm-5.2",
+  "small_model": "openrouter/z-ai/glm-5.2",
+  "lsp": true,
+
+  "plugin": [
+    "./plugins/shell-operator-guard.ts"
+  ],
+
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 8000
+  },
+
+  "permission": {
+    "*": "ask",
+    "read": "allow",
+    "list": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "edit": "allow",
+    "lsp": "allow",
+    "todowrite": "allow",
+    "task": "allow",
+    "skill": "allow",
+    "question": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+
+    // Shell access defaults to prompting. These read-only commands are allowed
+    // without prompting; the shell guard rejects chaining and redirection.
+    "bash": {
+      "*": "ask",
+      "git status": "allow",
+      "git status *": "allow",
+      "git log": "allow",
+      "git log *": "allow",
+      "git diff": "allow",
+      "git diff *": "allow",
+      "git show": "allow",
+      "git show *": "allow",
+      "git blame *": "allow",
+      "git rev-parse *": "allow",
+      "git ls-files": "allow",
+      "git ls-files *": "allow",
+      "git branch": "allow",
+      "git branch -a": "allow",
+      "git branch -r": "allow",
+      "git branch -v": "allow",
+      "git branch -vv": "allow",
+      "git remote -v": "allow",
+      "gh status": "allow",
+      "gh auth status": "allow",
+      "gh pr view *": "allow",
+      "gh pr list": "allow",
+      "gh pr list *": "allow",
+      "gh pr status": "allow",
+      "gh pr status *": "allow",
+      "gh pr checks *": "allow",
+      "gh pr diff *": "allow",
+      "gh issue view *": "allow",
+      "gh issue list": "allow",
+      "gh issue list *": "allow",
+      "gh repo view": "allow",
+      "gh repo view *": "allow"
+    },
+
+    // Inspection is frictionless. Browser interactions still prompt because
+    // clicks, form submissions, and uploads can mutate external systems.
+    "chrome_take_snapshot": "allow",
+    "chrome_take_screenshot": "allow",
+    "chrome_list_pages": "allow",
+    "chrome_list_console_messages": "allow",
+    "chrome_list_network_requests": "allow",
+    "chrome_get_network_request": "allow",
+    "playwright-safari_browser_snapshot": "allow",
+    "playwright-safari_browser_take_screenshot": "allow",
+    "playwright-safari_browser_console_messages": "allow",
+    "playwright-safari_browser_network_requests": "allow",
+    "playwright-safari_browser_network_request": "allow"
+  },
+
+  "mcp": {
+    "chrome": {
+      "type": "local",
+      "command": ["npx", "-y", "chrome-devtools-mcp@1.6.0", "--isolated"],
+      "enabled": true
+    },
+    "playwright-safari": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@0.0.79", "--browser", "webkit"],
+      "enabled": true
+    }
+  }
+}

@@ -94,11 +94,6 @@ Add these only on machines where they are useful, then authenticate locally:
       "type": "remote",
       "url": "https://mcp.sentry.dev/mcp",
       "enabled": true
-    },
-    "convictional": {
-      "type": "remote",
-      "url": "https://convictional.com/mcp",
-      "enabled": true
     }
   }
 }

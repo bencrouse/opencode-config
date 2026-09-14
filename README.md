@@ -11,11 +11,13 @@ skills, browser MCPs, and conservative permission defaults.
 - Frontend design, interface polish, and decision-framework skills.
 - A shell guard that prevents auto-approved read commands from hiding chained
   commands, substitutions, or redirections.
+- An intent-aware permission gate backed by the local LM Studio model
+  `qwen3.6-35b-a3b`.
 - Type checking and tests for custom plugins.
 
-The config intentionally excludes credentials, session state, logs, local-model
-permission automation, organization-specific MCPs, iOS tooling, and
-project-specific database or Git workflows.
+The config intentionally excludes credentials, session state, logs,
+organization-specific MCPs, iOS tooling, and project-specific database or Git
+workflows.
 
 ## Install
 
@@ -25,6 +27,7 @@ Requirements:
 - Node.js 24.15 or newer and npm
 - Git
 - Chrome for the Chrome MCP
+- LM Studio with `qwen3.6-35b-a3b` loaded and its API server enabled
 
 ```sh
 git clone <repository-url> ~/Code/opencode-config
@@ -40,6 +43,32 @@ Authenticate providers separately on each machine. Never copy
 
 After changing configuration, agents, commands, skills, or plugins, quit and
 restart OpenCode.
+
+## Permission Gate
+
+The permission gate classifies actions that OpenCode would otherwise ask you
+about. It can approve an action, but it cannot override an explicit deny. If LM
+Studio is unavailable, times out, or returns an invalid response, OpenCode falls
+back to its normal permission prompt.
+
+Start the LM Studio API server before OpenCode:
+
+```sh
+lms server start
+```
+
+The default endpoint is `http://127.0.0.1:1234/v1/chat/completions`, and the
+default model is `qwen3.6-35b-a3b`. Override either when launching OpenCode:
+
+```sh
+OPENCODE_PERMISSION_GATE_ENDPOINT=http://127.0.0.1:1234/v1/chat/completions \
+OPENCODE_PERMISSION_GATE_MODEL=another-model \
+opencode
+```
+
+Classification decisions are written to `~/.config/opencode/auditor.log`.
+Review that log while establishing confidence in the model's decisions. This
+experimental classifier reduces prompt fatigue; it is not a security boundary.
 
 ## Existing Config
 

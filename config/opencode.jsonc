@@ -6,7 +6,8 @@
   "lsp": true,
 
   "plugin": [
-    "./plugins/shell-operator-guard.ts"
+    "./plugins/shell-operator-guard.ts",
+    "./plugins/permissions-check.ts"
   ],
 
   "compaction": {

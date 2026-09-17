@@ -58,11 +58,14 @@ lms server start
 ```
 
 The default endpoint is `http://127.0.0.1:1234/v1/chat/completions`, and the
-default model is `qwen3.6-35b-a3b`. Override either when launching OpenCode:
+default model is `qwen3.6-35b-a3b`. Intent extraction and classification each
+have a 15-second timeout. Override these settings when launching OpenCode:
 
 ```sh
 OPENCODE_PERMISSION_GATE_ENDPOINT=http://127.0.0.1:1234/v1/chat/completions \
 OPENCODE_PERMISSION_GATE_MODEL=another-model \
+OPENCODE_PERMISSION_GATE_CLASSIFY_TIMEOUT_MS=20000 \
+OPENCODE_PERMISSION_GATE_EXTRACT_TIMEOUT_MS=20000 \
 opencode
 ```
 

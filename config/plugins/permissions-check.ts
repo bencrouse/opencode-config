@@ -36,8 +36,8 @@ function positiveIntegerFromEnv(name: string, fallback: number): number {
 
 const ENDPOINT = process.env.OPENCODE_PERMISSION_GATE_ENDPOINT ?? "http://127.0.0.1:1234/v1/chat/completions"
 const MODEL = process.env.OPENCODE_PERMISSION_GATE_MODEL ?? "qwen3.6-35b-a3b"
-const CLASSIFY_TIMEOUT_MS = positiveIntegerFromEnv("OPENCODE_PERMISSION_GATE_CLASSIFY_TIMEOUT_MS", 5000)
-const EXTRACT_TIMEOUT_MS = positiveIntegerFromEnv("OPENCODE_PERMISSION_GATE_EXTRACT_TIMEOUT_MS", 5000)
+const CLASSIFY_TIMEOUT_MS = positiveIntegerFromEnv("OPENCODE_PERMISSION_GATE_CLASSIFY_TIMEOUT_MS", 15000)
+const EXTRACT_TIMEOUT_MS = positiveIntegerFromEnv("OPENCODE_PERMISSION_GATE_EXTRACT_TIMEOUT_MS", 15000)
 const MAX_CONSECUTIVE = 3
 const MAX_TOTAL = 20
 const ARGS_CAP = 500

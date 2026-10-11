@@ -1,20 +1,31 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  "model": "openrouter/z-ai/glm-5.2",
-  "small_model": "openrouter/z-ai/glm-5.2",
+  "model": "openai/gpt-6.1-sol",
+  "small_model": "openai/gpt-5.6-sol",
+  "agent": {
+    "build": {
+      "model": "openai/gpt-6.1-sol",
+      "variant": "high"
+    }
+  },
   "lsp": true,
-
-  "plugin": [
-    "./plugins/shell-operator-guard.ts",
-    "./plugins/permissions-check.ts"
-  ],
 
   "compaction": {
     "auto": true,
-    "prune": true,
-    "reserved": 8000
+    "buffer": 8000
   },
+
+  "plugins": [
+    {
+      "package": "./plugins/permission-gate",
+      "options": {
+        "model": "qwen3.6-35b-a3b",
+        "classifyTimeoutMs": 30000,
+        "extractTimeoutMs": 30000
+      }
+    }
+  ],
 
   "permission": {
     "*": "ask",
@@ -31,10 +42,12 @@
     "webfetch": "allow",
     "websearch": "allow",
 
-    // Shell access defaults to prompting. These read-only commands are allowed
-    // without prompting; the shell guard rejects chaining and redirection.
+    // Shell access defaults to prompting. These CLI and read-only commands are
+    // allowed without prompting; the shell guard protects the read-only commands.
     "bash": {
       "*": "ask",
+      "herdr": "allow",
+      "herdr *": "allow",
       "git status": "allow",
       "git status *": "allow",
       "git log": "allow",

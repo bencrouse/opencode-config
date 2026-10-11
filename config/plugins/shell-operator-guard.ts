@@ -1,4 +1,4 @@
-import type { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 
 // Permission patterns are prefix-shaped, so `git diff *` can otherwise also
 // approve `git diff ... && destructive-command`. Reject shell composition for
@@ -88,16 +88,20 @@ export function hasUnsafeReadOption(command: string): boolean {
   return /(?:^|[\s"'])--(?:output(?:=|[\s"']|$)|web(?:[\s"']|$))/.test(command)
 }
 
-export default (async () => ({
-  "tool.execute.before": async (input, output) => {
-    if (input.tool !== "bash") return
+export default Plugin.define({
+  id: "shell-operator-guard",
+  async setup(ctx) {
+    await ctx.tool.hook("execute.before", (event) => {
+      if (event.tool !== "shell") return
 
-    const command = typeof output.args?.command === "string" ? output.args.command.trim() : ""
-    if (!isAutoApproved(command)) return
-    if (!hasShellComposition(command) && !hasUnsafeReadOption(command)) return
+      const input = event.input as { command?: string } | undefined
+      const command = typeof input?.command === "string" ? input.command.trim() : ""
+      if (!isAutoApproved(command)) return
+      if (!hasShellComposition(command) && !hasUnsafeReadOption(command)) return
 
-    throw new Error(
-      "BLOCKED: an auto-approved read command cannot compose shell commands, redirect output, write with --output, or open --web. Run it separately so OpenCode prompts for permission.",
-    )
+      throw new Error(
+        "BLOCKED: an auto-approved read command cannot compose shell commands, redirect output, write with --output, or open --web. Run it separately so OpenCode prompts for permission.",
+      )
+    })
   },
-})) satisfies Plugin
+})

@@ -22,4 +22,8 @@ else
 fi
 
 npm ci --prefix "$ROOT"
-printf '%s\n' "Installed dependencies. Restart OpenCode to load this config."
+npm install --prefix "$SOURCE" --ignore-scripts
+if command -v herdr >/dev/null 2>&1; then
+  herdr integration install opencode
+fi
+printf '%s\n' "Installed dependencies. Run opencode reload, then restart the TUI."

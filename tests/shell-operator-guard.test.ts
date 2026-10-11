@@ -1,7 +1,8 @@
 import assert from "node:assert/strict"
 import { describe, it } from "node:test"
 
-import { hasShellComposition, hasUnsafeReadOption } from "../config/plugins/shell-operator-guard.ts"
+import guard, { hasShellComposition, hasUnsafeReadOption } from "../config/plugins/shell-operator-guard.ts"
+import type { Plugin } from "@opencode/plugin"
 
 describe("hasShellComposition", () => {
   it("allows ordinary arguments and quoted operator characters", () => {
@@ -35,4 +36,17 @@ describe("hasUnsafeReadOption", () => {
     assert.equal(hasUnsafeReadOption("git log --oneline"), false)
     assert.equal(hasUnsafeReadOption("gh pr view 123 --json title"), false)
   })
+})
+
+it("registers a V2 tool hook and blocks unsafe auto-approved shell calls", async () => {
+  let before!: (event: any) => void | Promise<void>
+  await guard.setup({ tool: { hook: async (name: string, hook: typeof before) => {
+    assert.equal(name, "execute.before")
+    before = hook
+  } } } as unknown as Plugin.Context)
+  assert.throws(() => before({ tool: "shell", input: { command: "git diff && touch marker" } }), /BLOCKED/)
+  assert.throws(() => before({ tool: "shell", input: { command: "git log --output=log.txt" } }), /BLOCKED/)
+  assert.doesNotThrow(() => before({ tool: "shell", input: { command: "git diff --stat" } }))
+  assert.doesNotThrow(() => before({ tool: "shell", input: { command: "npm test && npm run build" } }))
+  assert.doesNotThrow(() => before({ tool: "read", input: { path: "file" } }))
 })

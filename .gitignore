@@ -2,7 +2,11 @@ node_modules/
 config/.gitignore
 config/bun.lock
 config/package-lock.json
-config/package.json
+config/service.json
+config/herdr-opencode/
+config/herdr-tui-session.js
+config/plugins/herdr-agent-state.js
+config/tui.jsonc
 auth.json
 mcp-auth.json
 *.db

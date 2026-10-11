@@ -1,0 +1,8 @@
+{
+  "name": "opencode-permission-gate",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  }
+}

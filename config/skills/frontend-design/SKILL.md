@@ -1,6 +1,8 @@
 ---
 name: frontend-design
 description: Guidance for distinctive, intentional visual design when building new UI or substantially reshaping an existing one. Use for aesthetic direction, typography, layout, and avoiding templated defaults.
+metadata:
+  opencode/autoinvoke: false
 license: Complete terms in LICENSE.txt
 ---
 

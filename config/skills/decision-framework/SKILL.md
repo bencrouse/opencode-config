@@ -1,6 +1,8 @@
 ---
 name: decision-framework
 description: Structured decision coaching. Use when the user explicitly asks for help making, stress-testing, or comparing a consequential decision; do not trigger for routine implementation choices.
+metadata:
+  opencode/autoinvoke: false
 ---
 
 # Decision Framework
